@@ -74,6 +74,11 @@ namespace PaintDotNet.Effects
             return DirectMessage(4021, new IntPtr(styleBase), IntPtr.Zero).ToInt32();
         }
 
+        internal void FreeSubstyles()
+        {
+            DirectMessage(4023, IntPtr.Zero, IntPtr.Zero);
+        }
+
         // Copied from Scinilla.NET's internal Helper class
         private static unsafe byte[] GetBytes(string text, Encoding encoding, bool zeroTerminated)
         {

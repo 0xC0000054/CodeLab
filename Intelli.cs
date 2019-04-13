@@ -31,6 +31,10 @@ namespace PaintDotNet.Effects
         internal static Dictionary<string, Type> AllTypes { get; }
         internal static Dictionary<string, string> Snippets { get; }
         internal static string[] Keywords { get; }
+        internal static string ClassList { get; }
+        internal static string EnumList { get; }
+        internal static string StructList { get; }
+        internal static string InterfaceList { get; }
         internal static Type UserScript
         {
             get
@@ -164,9 +168,31 @@ namespace PaintDotNet.Effects
             AllTypes.Add("string[]", typeof(string).MakeArrayType());
 
             // Add the referenced assembly types
-            List<AssemblyName> assemblies = new List<AssemblyName>();
-            assemblies.Add(typeof(Effect).Assembly.GetName());
-            assemblies.AddRange(typeof(Effect).Assembly.GetReferencedAssemblies());
+            List<AssemblyName> assemblies = new List<AssemblyName>(typeof(Effect).Assembly.GetReferencedAssemblies())
+            {
+                typeof(Effect).Assembly.GetName()
+            };
+            HashSet<string> enums = new HashSet<string>();
+            HashSet<string> interfaces = new HashSet<string>();
+            HashSet<string> structs = new HashSet<string>()
+            {
+                "IntSliderControl",
+                "CheckboxControl",
+                "ColorWheelControl",
+                "AngleControl", 
+                "PanSliderControl", 
+                "DoubleSliderControl",
+                "ListBoxControl",
+                "RadioButtonControl",
+                "ReseedButtonControl"
+            };
+            HashSet<string> classes = new HashSet<string>()
+            {
+                "TextboxControl",
+                "FilenameControl",
+                "RollControl",
+                "MultiLineTextboxControl"
+            };
 
             List<MethodInfo> extMethodsList = new List<MethodInfo>();
 
@@ -186,6 +212,23 @@ namespace PaintDotNet.Effects
                     if (!AllTypes.ContainsKey(name))
                     {
                         AllTypes.Add(name, type);
+                    }
+
+                    if (type.IsEnum)
+                    {
+                        enums.Add(name);
+                    }
+                    else if (type.IsValueType)
+                    {
+                        structs.Add(name);
+                    }
+                    else if (type.IsClass)
+                    {
+                        classes.Add(name);
+                    }
+                    else if (type.IsInterface)
+                    {
+                        interfaces.Add(name);
                     }
 
                     if (type != typeof(TypedReference))
@@ -217,6 +260,11 @@ namespace PaintDotNet.Effects
                         }
                     }
                 }
+
+                ClassList = classes.Join(" ");
+                EnumList = enums.Join(" ");
+                StructList = structs.Join(" ");
+                InterfaceList = interfaces.Join(" ");
             }
 
             extMethods = extMethodsList.ToArray();
