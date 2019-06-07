@@ -61,7 +61,6 @@ namespace PaintDotNet.Effects
         private bool mapScroll = false;
         private bool Replacing = false;
         private int maxLineNumberCharLength = 0;
-        private int indexForPurpleWords = -1;
         #endregion
 
         #region Properties
@@ -3302,15 +3301,11 @@ namespace PaintDotNet.Effects
                 }
             }
 
-
             this.SetKeywords(1, classWords);
             this.SetKeywords(0, "abstract as base bool byte char checked class const decimal delegate double enum event explicit extern "
                 + "false fixed float implicit int interface internal is lock long namespace new null object operator out override "
                 + "params partial private protected public readonly ref sbyte sealed short sizeof stackalloc static string struct "
                 + "this true typeof uint unchecked unsafe ulong ushort using var virtual void volatile");
-
-            this.FreeSubstyles();
-            this.AllocateSubstyles(Style.Cpp.Identifier, Substyle.NeededStyles);
 
             this.SetIdentifiers(Substyle.Keyword, "break case catch continue default do else finally for foreach goto if in return throw try switch while");
             this.SetIdentifiers(Substyle.Struct, structWords);
