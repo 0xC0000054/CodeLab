@@ -260,13 +260,12 @@ namespace PaintDotNet.Effects
                         }
                     }
                 }
-
-                ClassList = classes.Join(" ");
-                EnumList = enums.Join(" ");
-                StructList = structs.Join(" ");
-                InterfaceList = interfaces.Join(" ");
             }
 
+            ClassList = classes.Join(" ");
+            EnumList = enums.Join(" ");
+            StructList = structs.Join(" ");
+            InterfaceList = interfaces.Join(" ");
             extMethods = extMethodsList.ToArray();
         }
     }
